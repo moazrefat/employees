@@ -8,4 +8,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt --no-cache-dir
 ENTRYPOINT ["python"]
-CMD ["main.py"]
+CMD ["app.py"]
