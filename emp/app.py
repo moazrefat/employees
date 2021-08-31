@@ -9,10 +9,10 @@ import os
 import json
 
 SECRET_KEY = os.urandom(32)
-versionSVC = os.environ['VERSION_SERVICE']
-env = os.environ['APP_ENVIRONMENT']
-# versionSVC = "V2Prom"
-# env = "Prod"
+# versionSVC = os.environ['VERSION_SERVICE']
+# env = os.environ['APP_ENVIRONMENT']
+versionSVC = "V2Prom"
+env = "Prod"
 versionURL = 'http://{}:8080/version'.format(versionSVC)
 app = Flask(__name__,template_folder='templetes/')
 PrometheusMetrics(app)
@@ -137,3 +137,10 @@ def register():
                 conn.execute(query)
             return render_template('preview.html',firstname=firstname,lastname=lastname,department=department,email=email,comment=comment)
         return render_template('register_form.html',form=form,version=version)
+
+if __name__ == '__main__':
+    app.debug = True
+    host = os.environ.get('IP', '0.0.0.0')
+    # print(host)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host=host, port=port)
