@@ -1,3 +1,0 @@
-[submodule "argocd"]
-	path = argocd
-	url = git@gitlab.moaaznoaman.com:root/argocd.git
