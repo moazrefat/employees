@@ -16,7 +16,7 @@ def home():
     return "Hello, World version application {}".format(socket.gethostname())
 
 @app.route("/version")
-def home():
+def version():
     return "V1"
 
 @app.route("/health")
