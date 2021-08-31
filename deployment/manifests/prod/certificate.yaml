@@ -1,0 +1,19 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: employees-prod
+  namespace: employees-prod
+spec:
+  commonName: prod.k8s.moaaznoaman.com
+  dnsNames:
+    - "prod.k8s.moaaznoaman.com"
+  secretName: employees-prod
+  issuerRef:
+    name: moaaznoaman
+  acme:
+    config:
+      - http01:
+          ingress: nginx
+        domains:
+          - prod.k8s.moaaznoaman.com

@@ -1,0 +1,191 @@
+image: docker:latest
+
+stages:
+  - build
+#  - database
+  - deploy
+
+.build: &build
+  stage: build
+  services:
+    - name: docker:dind
+      entrypoint: [ "env", "-u", "DOCKER_HOST" ]
+      command: [ "dockerd-entrypoint.sh" ]
+  variables:
+#    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HUB_PASSWORD: Dontplaywithme@1988
+  before_script:
+    - echo "building ..."
+    - docker login -u moazrefat -p $DOCKER_HUB_PASSWORD
+
+build-dev-emp:
+  <<: *build
+  script:
+    - docker build -t $CI_COMMIT_BRANCH app/emp
+    - docker tag $CI_COMMIT_BRANCH moazrefat/employees:$CI_COMMIT_BRANCH
+    - docker push moazrefat/employees:$CI_COMMIT_BRANCH
+  only:
+    changes:
+      - app/emp/*
+    refs:
+      - branches
+  except:
+    - master
+  tags:
+    - aws
+#    - grunner1, gcp
+
+build-dev-version:
+  <<: *build
+  script:
+    - docker build -t $CI_COMMIT_BRANCH app/version
+    - docker tag $CI_COMMIT_BRANCH moazrefat/version:$CI_COMMIT_BRANCH
+    - docker push moazrefat/version:$CI_COMMIT_BRANCH
+  only:
+    changes:
+      - app/version/*
+    refs:
+      - branches
+  except:
+    - master
+  tags:
+    - aws
+#    - grunner2, gcp
+
+#build-rds:
+#  image: python:3.8-slim
+#  stage: database
+#  variables:
+#    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+#    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+#  environment:
+#    name: $CI_COMMIT_BRANCH
+#  script:
+#    - echo "database $CI_ENVIRONMENT_NAME"
+#    - echo $AWS_ACCESS_KEY_ID
+#    - echo $AWS_SECRET_ACCESS_KEY
+#    - echo $CI_ENVIRONMENT_NAME |tr "_" "-"
+#    - pip install -r scripts/rds/requirements.txt
+#    - python3.8 scripts/rds/deploy.py --create --name $(echo $CI_ENVIRONMENT_NAME |tr "_" "-")
+#  only:
+#    - branches
+#  except:
+#    - master
+#  tags:
+#    - grunner2, gcp
+
+build-prod-emp:
+  <<: *build
+  script:
+    - docker build -t prod app/emp
+    - docker tag prod moazrefat/employees:prod
+    - docker push moazrefat/employees:prod
+  only:
+    changes:
+      - app/emp/*
+    refs:
+      - master
+  only:
+    - master
+  tags:
+    - ec2
+
+build-prod-version:
+  <<: *build
+  script:
+    - docker build -t prod app/version
+    - docker tag prod moazrefat/version:prod
+    - docker push moazrefat/version:prod
+  only:
+    changes:
+      - app/version/*
+    refs:
+      - master
+  only:
+    - master
+  tags:
+    - ec2
+
+.deploy: &deploy
+  image: traherom/kustomize-docker
+  stage: deploy
+  before_script:
+    - apk add --no-cache bash git curl python python-dev py-pip build-base
+    - pip install awscli
+    - pip show awscli
+    - aws --version
+
+deploy-dev:
+  <<: *deploy
+  environment:
+    name: $CI_COMMIT_BRANCH
+    on_stop: dev-teardown
+  script:
+    - sh scripts/update.sh $CI_COMMIT_BRANCH
+  except:
+    - master
+  tags:
+    - aws
+
+deploy-prod:
+  <<: *deploy
+  environment:
+    name: prod
+    on_stop: prod-teardown
+  script:
+    - echo "Deploying to master $CI_ENVIRONMENT_NAME"
+    - sh scripts/update.sh $CI_ENVIRONMENT_NAME
+  only:
+    - master
+  tags:
+    - aws
+
+.teardown: &teardown
+  image: traherom/kustomize-docker
+  stage: deploy
+  variables:
+    GIT_STRATEGY: "clone"
+    CI_DEBUG_TRACE: "false"
+  before_script:
+    - echo "tearing down ..."
+    - apk add --no-cache bash git curl python3 python3-dev py3-pip build-base
+    - pip3 install -r scripts/rds/requirements.txt
+    - which python3
+  when: manual
+
+dev-teardown:
+  <<: *teardown
+  dependencies: []
+  variables:
+    GIT_STRATEGY: clone
+    GET_SOURCES_ATTEMPTS: "2"
+  environment:
+    name: $CI_COMMIT_BRANCH
+    action: stop
+  script:
+    - sh scripts/delete.sh $CI_ENVIRONMENT_NAME
+#    - python3 scripts/rds/deploy.py --delete --name $(echo $CI_ENVIRONMENT_NAME |tr "_" "-")
+  only:
+    - branches
+  except:
+    - master
+  tags:
+    - aws
+#    - grunner2, gcp
+
+prod-teardown:
+  <<: *teardown
+  dependencies: []
+  variables:
+    GIT_STRATEGY: "clone"
+  environment:
+    name: prod
+    action: stop
+  script:
+    - sh scripts/delete.sh $CI_ENVIRONMENT_NAME
+  only:
+    - master
+  tags:
+    - aws

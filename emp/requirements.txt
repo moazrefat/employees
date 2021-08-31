@@ -1,0 +1,7 @@
+requests
+flask
+flask_restful
+flask-wtf-top
+mysql-connector
+mysql-connector-python
+prometheus_flask_exporter

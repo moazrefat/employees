@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employees
+  namespace: employees-$CI_ENVIRONMENT_SLUG
+  labels:
+    app: employees
+    version: v1
+spec:
+  replicas: 2
