@@ -11,6 +11,10 @@ app.config['JSON_SORT_KEYS'] = False
 version="V1"
 hostname=socket.gethostname()
 
+@app.route("/")
+def home():
+    return "Hello, World version application {}".format(socket.gethostname())
+
 @app.route("/version")
 def home():
     return "V1"
