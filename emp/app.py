@@ -24,7 +24,7 @@ status=""
 
 @app.route("/")
 def home():
-    return "Hello, World from new change {}".format(socket.gethostname())
+    return "A message for openshift {}".format(socket.gethostname())
 
 @app.route("/welcome")
 def welcome():
