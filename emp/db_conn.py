@@ -21,8 +21,7 @@ class db():
             self.mysq = mysql.connector.connect(host=DB_LB,
                                                 user=DB_USER,
                                                 database=DB_NAME,
-                                                passwd=DB_PASSWORD,
-                                                auth_plugin='mysql_native_password')
+                                                passwd=DB_PASSWORD)
             # print('connection open ...')
             self.cursor = self.mysq.cursor()
             return self.cursor
