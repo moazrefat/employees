@@ -2,5 +2,5 @@
 FROM mysql:latest
 MAINTAINER "moaz.refat@hotmail.com"
 # Add a database
-ENV MYSQL_DATABASE version
+ENV MYSQL_DATABASE app
 COPY ./sql-scripts/ /docker-entrypoint-initdb.d/
