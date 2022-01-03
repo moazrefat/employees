@@ -9,9 +9,9 @@ import os
 import json
 
 SECRET_KEY = os.urandom(32)
-# versionSVC = os.environ['VERSION_SERVICE']
+versionSVC = os.environ['VERSION_SERVICE']
 # env = os.environ['APP_ENVIRONMENT']
-versionSVC = "V2Prom"
+# versionSVC = "V2Prom"
 env = "Prod"
 versionURL = 'http://{}:8080/version'.format(versionSVC)
 app = Flask(__name__,template_folder='templetes/')
