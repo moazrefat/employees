@@ -3,16 +3,19 @@ FROM python:3.7-alpine3.7
 # RUN pip install --upgrade pip
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
-ENV HOME="/home/moaaz"
+
 RUN adduser -D moaaz 
 USER moaaz
 WORKDIR /home/moaaz/app
 
-ENV PATH="${HOME}/.local/bin:${PATH}"
-
-COPY --chown=moaaz:moaaz . /home/moaaz/app
+COPY --chown=worker:worker requirements.txt requirements.txt
 
 RUN pip install --user -r ${HOME}/app/requirements.txt --no-cache-dir
+
+COPY --chown=moaaz:moaaz . .
+
+ENV HOME="/home/moaaz"
+ENV PATH="${HOME}/.local/bin:${PATH}"
 
 EXPOSE 8080
 ENTRYPOINT ["python"]
