@@ -18,5 +18,5 @@ ENV HOME="/home/moaaz"
 ENV PATH="${HOME}/.local/bin:${PATH}"
 
 EXPOSE 8080
-ENTRYPOINT ["python"]
-CMD ["./app.py"]
+# ENTRYPOINT ["python"]
+# CMD ["./app.py"]
