@@ -4,16 +4,16 @@ RUN pip install --upgrade pip
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
 
-ENV PATH="/home/moaaz/app/.local/bin:${PATH}"
-
 RUN adduser -D moaaz 
 USER moaaz
-WORKDIR /home/moaaz/app
+WORKDIR /home/moaaz/
 
 COPY --chown=moaaz:moaaz . .
 
 RUN pip install --user -r requirements.txt --no-cache-dir
 
+ENV PATH="/home/moaaz/.local/bin:${PATH}"
+
 EXPOSE 8080
 ENTRYPOINT ["python"]
-CMD ["/home/moaaz/app/app.py"]
+CMD ["./app.py"]
