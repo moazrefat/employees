@@ -14,4 +14,4 @@ RUN pip install --user -r requirements.txt --no-cache-dir
 USER moaaz
 EXPOSE 8080
 ENTRYPOINT ["python"]
-CMD ["/home/moaaz/app.py"]
+CMD ["./app.py"]
