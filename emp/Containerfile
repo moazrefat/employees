@@ -9,9 +9,9 @@ RUN adduser -D moaaz
 COPY . /home/moaaz/app
 WORKDIR /home/moaaz/app
 
-# RUN chown moaaz:moaaz /home/moaaz/app
-RUN pip install --user -r requirements.txt --no-cache-dir
 USER moaaz
+RUN pip install --user -r requirements.txt --no-cache-dir
+
 EXPOSE 8080
 ENTRYPOINT ["python"]
 CMD ["./app.py"]
