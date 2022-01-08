@@ -5,11 +5,13 @@ FROM python:3.7-alpine3.7
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> 
 ENV HOME="/home/moaaz"
 RUN adduser -D moaaz 
-
-COPY . /home/moaaz/app
+USER moaaz
 WORKDIR /home/moaaz/app
 
-USER moaaz
+ENV PATH="${HOME}:${PATH}"
+
+COPY --chown=moaaz:moaaz . /home/moaaz/app
+
 RUN pip install --user -r requirements.txt --no-cache-dir
 
 EXPOSE 8080
