@@ -4,7 +4,7 @@ FROM python:3.7-alpine3.7
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
 
-ENV PATH="/home/moaaz/.local/bin:${PATH}"
+ENV PATH="/home/moaaz/app/.local/bin:${PATH}"
 
 RUN adduser -D moaaz 
 USER moaaz
