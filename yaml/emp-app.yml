@@ -1,0 +1,138 @@
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: emp
+    name: emp-app
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: ""
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: emp
+    name: emp-app
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: emp-app:latest
+    postCommit: {}
+    resources: {}
+    source:
+      contextDir: emp
+      git:
+        ref: master
+        uri: https://github.com/moazrefat/employees.git
+      type: Git
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: "Containerfile"
+      # sourceStrategy:
+      #   from:
+      #     kind: ImageStreamTag
+      #     name: python:3.9-ubi8
+      #     namespace: openshift
+      type: Source
+    triggers:
+    - github:
+        secret: TGrBZMkKnq52meA235ji
+      type: GitHub
+    - generic:
+        secret: JbrTzW2bx616VMeTZipe
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: emp
+    name: emp-app
+  spec:
+    replicas: 1
+    selector:
+      app: emp
+      deploymentconfig: emp-app
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: emp
+          deploymentconfig: emp-app
+      spec:
+        containers:
+        - env:
+          - name: MYSQL_LB
+            value: mysql-db
+          - name: VERSION_SERVICE
+            value: version-app
+          image: emp-app:latest
+          name: emp-app
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - emp-app
+        from:
+          kind: ImageStreamTag
+          name: emp-app:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: emp
+    name: emp-app
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: emp
+      deploymentconfig: emp-app
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}

@@ -2,10 +2,18 @@
 #FROM python:3.7
 FROM python:3.7-alpine3.7
 
-MAINTAINER "moaz.refat@hotmail.com"
-COPY . /app
-WORKDIR /app
+MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> 
+ENV HOME="/home/moaaz"
+RUN groupadd moaaz \
+    && useradd -D moaaz 
 
+USER moaaz
+
+COPY . /home/moaaz/app
+WORKDIR /home/moaaz/app
+
+RUN chown moaaz:moaaz /home/moaaz/app
 RUN pip install -r requirements.txt --no-cache-dir
+EXPOSE 8080
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["$HOME/app.py"]
