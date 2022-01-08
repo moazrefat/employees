@@ -14,7 +14,7 @@ RUN pip install --user -r requirements.txt --no-cache-dir
 
 COPY --chown=moaaz:moaaz . .
 
-ENV HOME="/home/moaaz"
+ARG HOME="/home/moaaz"
 ENV PATH="${HOME}/.local/bin:${PATH}"
 
 EXPOSE 8080
