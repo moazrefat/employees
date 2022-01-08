@@ -8,11 +8,14 @@ RUN adduser -D moaaz
 USER moaaz
 WORKDIR /home/moaaz/
 
-COPY --chown=moaaz:moaaz . .
-
-RUN pip install --user -r requirements.txt --no-cache-dir
+RUN pip install --user pipenv
 
 ENV PATH="/home/moaaz/.local/bin:${PATH}"
+
+RUN pipenv lock -r > requirements.txt
+
+RUN pip install --user -r requirements.txt
+COPY --chown=moaaz:moaaz . .
 
 EXPOSE 8080
 ENTRYPOINT ["python"]
