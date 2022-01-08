@@ -3,7 +3,8 @@
 FROM python:3.7-alpine3.7
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> 
-ENV HOME="/home/moaaz"
+ARG HOME="/home/moaaz"
+# ENV HOME="/home/moaaz"
 RUN adduser -D moaaz 
 
 COPY . /home/moaaz/app
