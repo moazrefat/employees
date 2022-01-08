@@ -11,7 +11,7 @@ WORKDIR /home/moaaz/
 RUN pip install --user pipenv
 
 ENV PATH="/home/moaaz/.local/bin:${PATH}"
-
+COPY --chown=worker:worker Pipfile Pipfile
 RUN pipenv lock -r > requirements.txt
 
 RUN pip install --user -r requirements.txt
