@@ -4,17 +4,15 @@ FROM python:3.7-alpine3.7
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
 
+ENV PATH="/home/moaaz/.local/bin:${PATH}"
+
 RUN adduser -D moaaz 
 USER moaaz
 WORKDIR /home/moaaz/app
 
-COPY --chown=moaaz:moaaz requirements.txt requirements.txt
-
-RUN pip install --user -r requirements.txt --no-cache-dir
-
 COPY --chown=moaaz:moaaz . .
 
-ENV PATH="/home/moaaz/.local/bin:${PATH}"
+RUN pip install --user -r requirements.txt --no-cache-dir
 
 EXPOSE 8080
 ENTRYPOINT ["python"]
