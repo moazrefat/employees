@@ -10,7 +10,7 @@ USER moaaz
 COPY . /home/moaaz/app
 WORKDIR /home/moaaz/app
 
-RUN chown moaaz:moaaz /home/moaaz/app
+# RUN chown moaaz:moaaz /home/moaaz/app
 RUN pip install -r requirements.txt --no-cache-dir
 EXPOSE 8080
 ENTRYPOINT ["python"]
