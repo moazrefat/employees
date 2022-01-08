@@ -8,7 +8,7 @@ RUN adduser -D moaaz
 USER moaaz
 WORKDIR /home/moaaz/app
 
-COPY --chown=worker:worker requirements.txt requirements.txt
+COPY --chown=moaaz:moaaz requirements.txt requirements.txt
 
 RUN pip install --user -r ${HOME}/app/requirements.txt --no-cache-dir
 
