@@ -1,4 +1,4 @@
-FROM python:3.7-alpine3.7
+FROM python:3.7.2-alpine
 
 RUN pip install --upgrade pip
 
@@ -8,15 +8,13 @@ RUN adduser -D moaaz
 USER moaaz
 WORKDIR /home/moaaz/
 
-RUN pip install --user pipenv
+COPY --chown=moaaz:moaaz requirements.txt requirements.txt
+RUN pip install --user -r requirements.txt
 
 ENV PATH="/home/moaaz/.local/bin:${PATH}"
-COPY --chown=worker:worker Pipfile Pipfile
-RUN pipenv lock -r > requirements.txt
 
-RUN pip install --user -r requirements.txt
 COPY --chown=moaaz:moaaz . .
-
 EXPOSE 8080
+
 ENTRYPOINT ["python"]
-CMD ["./app.py"]
+CMD ["app.py"]
