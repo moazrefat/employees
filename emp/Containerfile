@@ -4,7 +4,7 @@ FROM python:3.7-alpine3.7
 
 MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> 
 ENV HOME="/home/moaaz"
-RUN useradd -D moaaz 
+RUN adduser -D moaaz 
 USER moaaz
 
 COPY . /home/moaaz/app
