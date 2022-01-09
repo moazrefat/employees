@@ -1,20 +1,36 @@
-FROM python:3.7.2-alpine
+# FROM python:3.7.2-alpine
 
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 
-MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
+# MAINTAINER  "Moaaz Noaman" <moaz.refat@hotmail.com> version="1.0.0"
 
-RUN adduser -D moaaz 
+# RUN adduser -D moaaz 
+# USER moaaz
+# WORKDIR /home/moaaz/
+
+# COPY --chown=moaaz:moaaz requirements.txt requirements.txt
+# RUN pip install --user -r requirements.txt
+
+# ENV PATH="/home/moaaz/.local/bin:${PATH}"
+
+# COPY --chown=moaaz:moaaz . .
+# EXPOSE 8080
+
+# ENTRYPOINT ["python"]
+# CMD ["app.py"]
+
+
+#FROM python:3.7
+FROM python:3.7-alpine3.7
+
+MAINTAINER "moaz.refat@hotmail.com"
+
+RUN adduser -D moaaz
 USER moaaz
-WORKDIR /home/moaaz/
 
-COPY --chown=moaaz:moaaz requirements.txt requirements.txt
-RUN pip install --user -r requirements.txt
+WORKDIR /home/moaaz/app
+COPY --chown=moaaz:moaaz . /home/moaaz/app
 
-ENV PATH="/home/moaaz/.local/bin:${PATH}"
-
-COPY --chown=moaaz:moaaz . .
-EXPOSE 8080
-
+RUN pip install --user -r requirements.txt --no-cache-dir
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["/home/moaaz/app/app.py"]
