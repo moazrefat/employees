@@ -41,8 +41,8 @@ items:
       dockerStrategy:
         dockerfilePath: "Containerfile"
         buildArgs:
-          - name: "foo"
-            value: "bar"
+          - name: "DIR"
+            value: "app"
       #   from:
       #     kind: ImageStreamTag
       #     name: python:3.9-ubi8
