@@ -41,7 +41,7 @@ items:
       dockerStrategy:
         dockerfilePath: "Containerfile"
         buildArgs:
-          - name: "DIR"
+          - name: "dir"
             value: "app"
       #   from:
       #     kind: ImageStreamTag

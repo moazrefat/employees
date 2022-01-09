@@ -7,8 +7,8 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: version
-    name: version-app
+      app: mysql-db
+    name: mysql-db
   spec:
     lookupPolicy:
       local: false
@@ -21,93 +21,87 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: version
-    name: version-app
+      app: mysql-db
+    name: mysql-db
   spec:
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: version-app:latest
+        name: mysql-db:latest
     postCommit: {}
     resources: {}
     source:
-      contextDir: version
+      contextDir: db
       git:
         ref: master
         uri: https://github.com/moazrefat/employees.git
       type: Git
     strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          name: python:3.9-ubi8
-          namespace: openshift
+      dockerStrategy:
+        dockerfilePath: "Containerfile"
+        buildArgs:
+          - name: "DB"
+            value: "app"
+      # sourceStrategy:
+      #   from:
+      #     kind: ImageStreamTag
+      #     name: mysql:8.0-el8
+      #     namespace: openshift
       type: Source
     triggers:
     - github:
-        secret: fhVUdxMDb83Z90psG0Bz
+        secret: KJHneUyIxbUTqQjXNgEl
       type: GitHub
     - generic:
-        secret: t0ln5uFSodeEubk32yYL
+        secret: SO9X9VjjoVgKT4EEfKdR
       type: Generic
     - type: ConfigChange
     - imageChange: {}
       type: ImageChange
   status:
     lastVersion: 0
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"mysql-db:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"mysql-db\")].image"}]'
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: version
-    name: version-app
+      app: mysql-db
+    name: mysql-db
   spec:
     replicas: 1
     selector:
-      app: version
-      deploymentconfig: version-app
-    strategy:
-      resources: {}
+      matchLabels:
+        app: mysql-db
+        deployment: mysql-db
+    strategy: {}
     template:
       metadata:
         annotations:
           openshift.io/generated-by: OpenShiftNewApp
         creationTimestamp: null
         labels:
-          app: version
-          deploymentconfig: version-app
+          app: mysql-db
+          deployment: mysql-db
       spec:
         containers:
         - env:
-          - name: MYSQL_LB
-            value: mysql-db
-          image: version-app:latest
-          name: version-app
+          - name: MYSQL_PASSWORD
+            value: dontplaywithme
+          - name: MYSQL_ROOT_PASSWORD
+            value: dontplaywithme
+          - name: MYSQL_USER
+            value: admin
+          image: ' '
+          name: mysql-db
           ports:
-          - containerPort: 8080
+          - containerPort: 3306
             protocol: TCP
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - version-app
-        from:
-          kind: ImageStreamTag
-          name: version-app:latest
-      type: ImageChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
+          resources: {}
+  status: {}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -115,17 +109,17 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: version
-    name: version-app
+      app: mysql-db
+    name: mysql-db
   spec:
     ports:
-    - name: 8080-tcp
-      port: 8080
+    - name: 3306-tcp
+      port: 3306
       protocol: TCP
-      targetPort: 8080
+      targetPort: 3306
     selector:
-      app: version
-      deploymentconfig: version-app
+      app: mysql-db
+      deployment: mysql-db
   status:
     loadBalancer: {}
 kind: List
