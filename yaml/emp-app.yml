@@ -38,21 +38,22 @@ items:
         uri: https://github.com/moazrefat/employees.git
       type: Git
     strategy:
-      type: Docker
       dockerStrategy:
         dockerfilePath: "Containerfile"
-      # sourceStrategy:
+        buildArgs:
+          - name: "foo"
+            value: "bar"
       #   from:
       #     kind: ImageStreamTag
       #     name: python:3.9-ubi8
       #     namespace: openshift
-      type: Source
+      # type: Source
     triggers:
     - github:
-        secret: TGrBZMkKnq52meA235ji
+        secret: TfxJnrZKPfNwEy1sqmxY
       type: GitHub
     - generic:
-        secret: JbrTzW2bx616VMeTZipe
+        secret: whl6tmE95Z5uxDDJXwoC
       type: Generic
     - type: ConfigChange
     - imageChange: {}
