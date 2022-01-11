@@ -8,7 +8,7 @@ WORKDIR /${dir}
 
 RUN echo ${PASSWORD} > password.txt 
 
-ADD testfile.cfg /${dir}
+# ADD testfile.cfg /${dir}
 
 ENV MYSQL_LB=mysql-db \
     VERSION_SERVICE=version-app
