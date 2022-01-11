@@ -6,6 +6,8 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
+COPY testfile.cfg /${dir}
+
 RUN pip install -r requirements.txt --no-cache-dir
 ENTRYPOINT ["python"]
 CMD ["app.py"]
