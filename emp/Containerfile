@@ -6,7 +6,8 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
-COPY testfile.cfg /${dir}
+ENV user=${NAME}
+ENV password=${PASSWORD}
 
 RUN pip install -r requirements.txt --no-cache-dir
 ENTRYPOINT ["python"]
