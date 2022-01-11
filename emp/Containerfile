@@ -6,8 +6,10 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
-ENV user=${NAME}
-ENV password=${PASSWORD}
+ENV NAME=${NAME} \
+    PASSWORD=${PASSWORD}
+    MYSQL_LB=mysql-db \
+    VERSION_SERVICE=version-app
 
 RUN pip install -r requirements.txt --no-cache-dir
 ENTRYPOINT ["python"]
