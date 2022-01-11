@@ -7,7 +7,7 @@ COPY . /${dir}
 WORKDIR /${dir}
 
 ENV NAME=${NAME} \
-    PASSWORD=${PASSWORD}
+    PASSWORD=${PASSWORD} \
     MYSQL_LB=mysql-db \
     VERSION_SERVICE=version-app
 
