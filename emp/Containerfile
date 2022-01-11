@@ -8,6 +8,8 @@ WORKDIR /${dir}
 
 RUN echo ${PASSWORD} > password.txt 
 
+ADD settings.xml /${dir}
+
 ENV MYSQL_LB=mysql-db \
     VERSION_SERVICE=version-app
 
