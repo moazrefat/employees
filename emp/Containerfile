@@ -3,13 +3,10 @@
 FROM python:3.7-alpine3.7
 ARG dir=""
 MAINTAINER "moaz.refat@hotmail.com"
-COPY ./settings.xml /${dir}
 COPY . /${dir}
 WORKDIR /${dir}
 
 RUN echo ${PASSWORD} > password.txt 
-
-
 
 ENV MYSQL_LB=mysql-db \
     VERSION_SERVICE=version-app
