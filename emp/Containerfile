@@ -6,6 +6,8 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
+COPY .m2/settings.xml /tmp/
+
 RUN echo ${PASSWORD} > password.txt 
 
 ENV MYSQL_LB=mysql-db \
