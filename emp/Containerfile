@@ -6,7 +6,7 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
-# COPY .m2/settings.xml /tmp/
+COPY settings.xml /tmp/
 
 RUN echo ${PASSWORD} > password.txt 
 
