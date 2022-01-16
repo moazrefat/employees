@@ -6,8 +6,6 @@ MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
 
-RUN echo ${PASSWORD} > password.txt 
-
 ENV MYSQL_LB=mysql-db \
     VERSION_SERVICE=version-app
 
