@@ -1,7 +1,7 @@
 ## Pull base image
 #FROM python:3.7
 FROM python:3.7-alpine3.7
-# ARG dir=""
+ARG dir=""
 MAINTAINER "moaz.refat@hotmail.com"
 COPY . /${dir}
 WORKDIR /${dir}
