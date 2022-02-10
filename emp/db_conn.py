@@ -8,7 +8,7 @@ DB_LB = os.environ['MYSQL_LB']
 # DB_PASSWORD = os.environ['MYSQL_PASSWORD']
 # DB_LB='localhost'
 MYSQL_ROOT_PASSWORD='dontplaywithme'
-PORT="80"
+DB_PORT=80
 DB_NAME='app'
 DB_USER='root'
 DB_PASSWORD='dontplaywithme'
@@ -20,7 +20,7 @@ class db():
     def __enter__(self):
         try:
             self.mysq = mysql.connector.connect(host=DB_LB,
-                                                port=PORT,
+                                                DB_PORT=PORT,
                                                 user=DB_USER,
                                                 database=DB_NAME,
                                                 passwd=DB_PASSWORD)
