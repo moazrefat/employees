@@ -20,7 +20,7 @@ class db():
     def __enter__(self):
         try:
             self.mysq = mysql.connector.connect(host=DB_LB,
-                                                DB_PORT=PORT,
+                                                port=DB_PORT,
                                                 user=DB_USER,
                                                 database=DB_NAME,
                                                 passwd=DB_PASSWORD)
