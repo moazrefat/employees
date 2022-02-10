@@ -13,7 +13,7 @@ versionSVC = os.environ['VERSION_SERVICE']
 # env = os.environ['APP_ENVIRONMENT']
 # versionSVC = "V2Prom"
 env = "Prod"
-versionURL = 'http://{}:8080/version'.format(versionSVC)
+versionURL = 'http://{}/version'.format(versionSVC)
 app = Flask(__name__,template_folder='templetes/')
 PrometheusMetrics(app)
 # metrics.start_http_server(5099)
@@ -59,7 +59,7 @@ def info():
 @app.route('/api/health')
 def health():
     healthStatus = defaultdict(dict)
-    healthURL='http://{}:8080/health'.format(versionSVC)
+    healthURL='http://{}/health'.format(versionSVC)
     healthResponse = requests.get(url=healthURL)
     print(healthResponse)
     healthCheck = json.loads(healthResponse.text)
