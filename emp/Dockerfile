@@ -3,6 +3,7 @@
 FROM python:3.7-alpine3.7
 ARG dir="/app"
 MAINTAINER "moaz.refat@hotmail.com"
+RUN mkdir /${dir}
 COPY . /${dir}
 WORKDIR /${dir}
 
